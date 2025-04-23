@@ -1,3 +1,5 @@
+#Collaboration with Mingming Cao, Rice University
+
 (1) Reorder the columns
 	awk '{print $1,'\t',$2,'\t',$3,'\t',$4}' <filename (i.e. hg19_gRNA_to_process.txt)>
 
