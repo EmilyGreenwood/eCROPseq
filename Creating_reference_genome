@@ -1,0 +1,42 @@
+#Download reference genomoe
+wget https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz
+
+  ##Create fa file following Datlinger et al. [DOI: https://doi.org/10.1038/nmeth.4177](https://www.nature.com/articles/nmeth.4177) with each gRNA sequence
+>positive_ctrl_1_chr
+GAGGGCCTATTTCCCATGATTCCTTCATATTTGCATATACGATACAAGGCTGTTAGAGAG
+ATAATTAGAATTAATTTGACTGTAAACACAAAGATATTAGTACAAAATACGTGACGTAGA
+AAGTAATAATTTCTTGGGTAGTTTGCAGTTTTAAAATTATGTTTTAAAATGGACTATCAT
+ATGCTTACCGTAACTTGAAAGTATTTCGATTTCTTGGCTTTATATATCTTGTGGAAAGGA
+CGAAACACCGGGGTTCTAGATCCACCAGGAGTTTTAGAGCTAGAAATAGCAAGTTAAAAT
+AAGGCTAGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGGTGCTTTTTTAAGCTTGG
+CGTAACTAGATCTTGAGACACTGCTTTTTGCTTGTACTGGGTCTCTCTGGTTAGACCAGA
+TCTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTGCTTAAGCCTCAATAAAGCT
+TGCCTTGAGTGCTTCAAGTAGTGTGTGCCCGTCTGTTGTGTGACTCTGGT
+
+  ##Create gtf file following Datlinger et al. [DOI: https://doi.org/10.1038/nmeth.4177](https://www.nature.com/articles/nmeth.4177) with each gRNA sequence
+positive_ctrl_1_chr	ensembl_havana	lncRNA	1	250	.	+	.	gene_id "u6_promoter_1"; transcript_id "u6_transcript_1"; gene_name "u6_promoter_1";
+positive_ctrl_1_chr	ensembl_havana	exon	251	270	.	+	.	gene_id "positive_ctrl_1_gene"; transcript_id "positive_ctrl_1_transcript"; gene_name "positive_ctrl_1_gene"; gene_biotype "protein_coding";
+positive_ctrl_1_chr	ensembl_havana	lncRNA	271	530	.	+	.	gene_id "backbone_1"; transcript_id "backbone_transcript_1"; gene_name "backbone_1";
+
+#following https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_mr 
+#Add Exogenous Sequences to a Custom Reference
+
+	##First, make copies of the GRCh38-2020-A reference files in a separate directory:
+mkdir custom-GRCh38-2020-A
+cd custom-GRCh38-2020-A
+cp ../refdata-gex-GRCh38-2020-A/genes/genes.gtf customref-GRCh38-2020-A.gtf
+cp ../refdata-gex-GRCh38-2020-A/fasta/genome.fa customref-GRCh38-2020-A.fa
+	
+	##Then, append the custom panel files to the ends of the GRCh38-2020-A files.
+cat custompanel.gtf >> customref-GRCh38-2020-A.gtf
+cat custompanel.fa >> customref-GRCh38-2020-A.fa
+
+	##Check the files with the following commands to confirm that the process above worked:
+tail customref-GRCh38-2020-A.gtf
+tail customref-GRCh38-2020-A.fa
+
+	##Now use these files as inputs to the cellranger mkref pipeline:
+cellranger mkref \
+  --genome=customref-GRCh38-2020-A \
+  --fasta=customref-GRCh38-2020-A.fa \
+  --genes=customref-GRCh38-2020-A.gtf
