@@ -30,7 +30,8 @@ If positions in SNP.csv file are in GrCH37/Hg19 human reference genome format, u
 
 **Supplementing reference genome**
 
-Fasta and GTF so for each gRNA sequence as a chromosome were created following protocol laid out in Datlinger et al. [DOI: https://doi.org/10.1038/nmeth.4177](https://www.nature.com/articles/nmeth.4177). To create reference genomes, we followed https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_mr by first copying the Human reference genome's (https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz) fasta and GTF files into a new folder. Then concatenated the gRNA fasta and GTF file to the Hg38 fasta and GTF file, respectively. 
+Fasta and GTF so for each gRNA sequence as a chromosome were created following protocol laid out in Datlinger et al. [DOI: https://doi.org/10.1038/nmeth.4177](https://www.nature.com/articles/nmeth.4177). To create reference genomes, we followed https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_mr by first copying the Human reference genome's (https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz) fasta and GTF files into a new folder. Then concatenated the gRNA fasta and GTF file to the Hg38 fasta and GTF file, respectively. For more details and .fa and .gtf file examples please refer to Creating_reference_genome.
+
 For samples processed with 10x genomics, we then ran cell ranger mkref to create the reference. For samples processed with Fluent Biosciences, we ran Star v.2.7.11a with the following command:
 	
  	./STAR --runMode genomeGenerate --genomeDir ~/path/for/file --runThreadN 4 --genomeFastaFiles ~/path/to/fasta --sjdbGTFfile ~/path/to/gtf --sjdbOverhang 69 --runThreadN 7 --genomeSAsparseD 3.
